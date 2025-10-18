@@ -150,6 +150,9 @@ body {
 .canvas-subtitle-edit {
   font-size: 1.125rem;
   color: var(--gray-600);
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.6;
 }
 
 .canvas-title-edit:focus,

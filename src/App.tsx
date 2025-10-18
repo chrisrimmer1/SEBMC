@@ -6,6 +6,7 @@ import { EditModal } from './components/EditModal';
 import { useAuth } from './hooks/useAuth';
 import { useCanvasDataDB as useCanvasData } from './hooks/useCanvasDataDB'; // Changed to database version
 import type { ContentItem, SectionId } from './types';
+import { parseMarkdown } from './utils/markdown';
 import './App.css';
 
 function App() {
@@ -111,17 +112,21 @@ function App() {
           )}
 
           {editingCanvasSubtitle ? (
-            <input
-              type="text"
+            <textarea
               className="canvas-subtitle-edit"
               value={tempCanvasSubtitle}
               onChange={(e) => setTempCanvasSubtitle(e.target.value)}
               onBlur={handleSaveCanvasSubtitle}
               onKeyDown={(e) => {
-                if (e.key === 'Enter') handleSaveCanvasSubtitle();
-                if (e.key === 'Escape') setEditingCanvasSubtitle(false);
+                if (e.key === 'Enter' && e.ctrlKey) {
+                  handleSaveCanvasSubtitle();
+                } else if (e.key === 'Escape') {
+                  setEditingCanvasSubtitle(false);
+                }
               }}
+              rows={3}
               autoFocus
+              placeholder="Use **bold** or *italic* for formatting. Press Ctrl+Enter to save, Esc to cancel."
             />
           ) : (
             <p
@@ -129,7 +134,7 @@ function App() {
               onClick={handleCanvasSubtitleClick}
               title={isAuthenticated ? 'Click to edit subtitle' : ''}
             >
-              {canvasData.canvasSubtitle || 'Plan your social impact venture'}
+              {parseMarkdown(canvasData.canvasSubtitle || 'Plan your social impact venture')}
             </p>
           )}
         </div>
