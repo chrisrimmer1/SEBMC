@@ -760,23 +760,51 @@ kbd {
     font-size: 1.5rem;
   }
 
-  .row-1,
-  .row-2,
-  .row-3 {
-    grid-template-columns: 1fr;
+  /* Stack all panels vertically */
+  .business-model-canvas {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
   }
 
-  .sidebar {
-    width: 90%;
-    right: -100%;
+  /* All panels full width, no grid positioning */
+  .canvas-section:nth-child(1),
+  .canvas-section:nth-child(2),
+  .canvas-section:nth-child(3),
+  .canvas-section:nth-child(4),
+  .canvas-section:nth-child(5),
+  .canvas-section:nth-child(6),
+  .canvas-section:nth-child(7),
+  .canvas-section:nth-child(8),
+  .canvas-section:nth-child(9) {
+    grid-column: auto;
+    grid-row: auto;
   }
 
-  .sidebar.open {
-    right: 5%;
+  /* Hide edit mode UI on mobile */
+  .sidebar,
+  .sidebar-toggle,
+  .add-item-btn,
+  .delete-btn,
+  .drag-handle,
+  .mode-indicator {
+    display: none !important;
   }
 
-  .sidebar-toggle {
-    right: 1rem;
+  /* Make subtitles non-editable on mobile */
+  .section-subtitle.editable,
+  .editable-canvas-heading {
+    cursor: default;
+    pointer-events: none;
+  }
+
+  .section-subtitle.editable:hover,
+  .editable-canvas-heading:hover {
+    background-color: transparent;
+  }
+
+  .edit-icon-inline {
+    display: none;
   }
 
   .modal {
