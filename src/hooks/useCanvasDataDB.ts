@@ -172,6 +172,48 @@ export function useCanvasDataDB() {
     reader.readAsText(file);
   }, [saveData]);
 
+  // Update section subtitle
+  const updateSubtitle = useCallback((sectionId: SectionId, subtitle: string) => {
+    setCanvasData(prev => {
+      const newData = {
+        ...prev,
+        sections: {
+          ...prev.sections,
+          [sectionId]: {
+            ...prev.sections[sectionId],
+            subtitle
+          }
+        }
+      };
+      saveData(newData);
+      return newData;
+    });
+  }, [saveData]);
+
+  // Update canvas title
+  const updateCanvasTitle = useCallback((title: string) => {
+    setCanvasData(prev => {
+      const newData = {
+        ...prev,
+        canvasTitle: title
+      };
+      saveData(newData);
+      return newData;
+    });
+  }, [saveData]);
+
+  // Update canvas subtitle
+  const updateCanvasSubtitle = useCallback((subtitle: string) => {
+    setCanvasData(prev => {
+      const newData = {
+        ...prev,
+        canvasSubtitle: subtitle
+      };
+      saveData(newData);
+      return newData;
+    });
+  }, [saveData]);
+
   // Clear all data
   const clearData = useCallback(() => {
     if (confirm('Are you sure you want to clear all data?')) {
@@ -189,6 +231,9 @@ export function useCanvasDataDB() {
     updateItem,
     deleteItem,
     reorderItems,
+    updateSubtitle,
+    updateCanvasTitle,
+    updateCanvasSubtitle,
     exportData,
     importData,
     clearData

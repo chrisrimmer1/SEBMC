@@ -17,12 +17,19 @@ function App() {
     updateItem,
     deleteItem,
     reorderItems,
+    updateSubtitle,
+    updateCanvasTitle,
+    updateCanvasSubtitle,
     exportData,
     importData,
     clearData
   } = useCanvasData();
 
   const [editingItem, setEditingItem] = useState<{ sectionId: SectionId; item: ContentItem } | null>(null);
+  const [editingCanvasTitle, setEditingCanvasTitle] = useState(false);
+  const [editingCanvasSubtitle, setEditingCanvasSubtitle] = useState(false);
+  const [tempCanvasTitle, setTempCanvasTitle] = useState('');
+  const [tempCanvasSubtitle, setTempCanvasSubtitle] = useState('');
 
   const handleEditItem = (sectionId: SectionId, item: ContentItem) => {
     setEditingItem({ sectionId, item });
@@ -33,6 +40,30 @@ function App() {
       updateItem(editingItem.sectionId, editingItem.item.id, updates);
       setEditingItem(null);
     }
+  };
+
+  const handleCanvasTitleClick = () => {
+    if (isAuthenticated) {
+      setTempCanvasTitle(canvasData.canvasTitle || 'Social Enterprise Business Model Canvas');
+      setEditingCanvasTitle(true);
+    }
+  };
+
+  const handleCanvasSubtitleClick = () => {
+    if (isAuthenticated) {
+      setTempCanvasSubtitle(canvasData.canvasSubtitle || 'Plan your social impact venture');
+      setEditingCanvasSubtitle(true);
+    }
+  };
+
+  const handleSaveCanvasTitle = () => {
+    updateCanvasTitle(tempCanvasTitle);
+    setEditingCanvasTitle(false);
+  };
+
+  const handleSaveCanvasSubtitle = () => {
+    updateCanvasSubtitle(tempCanvasSubtitle);
+    setEditingCanvasSubtitle(false);
   };
 
   const sections = canvasData.sections;
@@ -56,8 +87,51 @@ function App() {
 
       <main className="main-content">
         <div className="canvas-header">
-          <h2>Social Enterprise Business Model Canvas</h2>
-          <p className="canvas-subtitle">Plan your social impact venture</p>
+          {editingCanvasTitle ? (
+            <input
+              type="text"
+              className="canvas-title-edit"
+              value={tempCanvasTitle}
+              onChange={(e) => setTempCanvasTitle(e.target.value)}
+              onBlur={handleSaveCanvasTitle}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') handleSaveCanvasTitle();
+                if (e.key === 'Escape') setEditingCanvasTitle(false);
+              }}
+              autoFocus
+            />
+          ) : (
+            <h2
+              className={isAuthenticated ? 'editable-canvas-heading' : ''}
+              onClick={handleCanvasTitleClick}
+              title={isAuthenticated ? 'Click to edit title' : ''}
+            >
+              {canvasData.canvasTitle || 'Social Enterprise Business Model Canvas'}
+            </h2>
+          )}
+
+          {editingCanvasSubtitle ? (
+            <input
+              type="text"
+              className="canvas-subtitle-edit"
+              value={tempCanvasSubtitle}
+              onChange={(e) => setTempCanvasSubtitle(e.target.value)}
+              onBlur={handleSaveCanvasSubtitle}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') handleSaveCanvasSubtitle();
+                if (e.key === 'Escape') setEditingCanvasSubtitle(false);
+              }}
+              autoFocus
+            />
+          ) : (
+            <p
+              className={`canvas-subtitle ${isAuthenticated ? 'editable-canvas-heading' : ''}`}
+              onClick={handleCanvasSubtitleClick}
+              title={isAuthenticated ? 'Click to edit subtitle' : ''}
+            >
+              {canvasData.canvasSubtitle || 'Plan your social impact venture'}
+            </p>
+          )}
         </div>
 
         <div className="business-model-canvas">
@@ -69,6 +143,7 @@ function App() {
             onEditItem={(item) => handleEditItem('social-problem', item)}
             onDeleteItem={deleteItem}
             onReorderItems={reorderItems}
+            onUpdateSubtitle={updateSubtitle}
           />
 
           {/* Column 2: Service Portfolio (tall) */}
@@ -79,6 +154,7 @@ function App() {
             onEditItem={(item) => handleEditItem('service-portfolio', item)}
             onDeleteItem={deleteItem}
             onReorderItems={reorderItems}
+            onUpdateSubtitle={updateSubtitle}
           />
 
           {/* Column 3: Core Value (tall) */}
@@ -89,6 +165,7 @@ function App() {
             onEditItem={(item) => handleEditItem('core-value', item)}
             onDeleteItem={deleteItem}
             onReorderItems={reorderItems}
+            onUpdateSubtitle={updateSubtitle}
           />
 
           {/* Column 4: Beneficiaries (top) */}
@@ -99,6 +176,7 @@ function App() {
             onEditItem={(item) => handleEditItem('beneficiaries', item)}
             onDeleteItem={deleteItem}
             onReorderItems={reorderItems}
+            onUpdateSubtitle={updateSubtitle}
           />
 
           {/* Column 5: Impact (tall) */}
@@ -109,6 +187,7 @@ function App() {
             onEditItem={(item) => handleEditItem('impact', item)}
             onDeleteItem={deleteItem}
             onReorderItems={reorderItems}
+            onUpdateSubtitle={updateSubtitle}
           />
 
           {/* Column 1 bottom: Network Partners */}
@@ -119,6 +198,7 @@ function App() {
             onEditItem={(item) => handleEditItem('network-partners', item)}
             onDeleteItem={deleteItem}
             onReorderItems={reorderItems}
+            onUpdateSubtitle={updateSubtitle}
           />
 
           {/* Column 4 bottom: Channels */}
@@ -129,6 +209,7 @@ function App() {
             onEditItem={(item) => handleEditItem('channels', item)}
             onDeleteItem={deleteItem}
             onReorderItems={reorderItems}
+            onUpdateSubtitle={updateSubtitle}
           />
 
           {/* Bottom row: Costs */}
@@ -139,6 +220,7 @@ function App() {
             onEditItem={(item) => handleEditItem('costs', item)}
             onDeleteItem={deleteItem}
             onReorderItems={reorderItems}
+            onUpdateSubtitle={updateSubtitle}
           />
 
           {/* Bottom row: Revenue Stream */}
@@ -149,6 +231,7 @@ function App() {
             onEditItem={(item) => handleEditItem('revenue-stream', item)}
             onDeleteItem={deleteItem}
             onReorderItems={reorderItems}
+            onUpdateSubtitle={updateSubtitle}
           />
         </div>
 

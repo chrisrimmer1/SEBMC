@@ -119,6 +119,45 @@ body {
   color: var(--gray-600);
 }
 
+.editable-canvas-heading {
+  cursor: pointer;
+  padding: 0.25rem;
+  margin: -0.25rem;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.editable-canvas-heading:hover {
+  background-color: var(--gray-100);
+}
+
+.canvas-title-edit,
+.canvas-subtitle-edit {
+  width: 100%;
+  text-align: center;
+  font-family: inherit;
+  border: 2px solid var(--primary-yellow);
+  border-radius: 4px;
+  padding: 0.5rem;
+}
+
+.canvas-title-edit {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary-black);
+}
+
+.canvas-subtitle-edit {
+  font-size: 1.125rem;
+  color: var(--gray-600);
+}
+
+.canvas-title-edit:focus,
+.canvas-subtitle-edit:focus {
+  outline: none;
+  border-color: var(--primary-black);
+}
+
 /* Business Model Canvas Grid - using 10 columns for precise layout */
 .business-model-canvas {
   display: grid;
@@ -216,6 +255,50 @@ body {
   color: var(--gray-600);
   font-style: italic;
   line-height: 1.4;
+  position: relative;
+  display: inline-block;
+}
+
+.section-subtitle.editable {
+  cursor: pointer;
+  padding: 0.25rem;
+  margin: -0.25rem;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.section-subtitle.editable:hover {
+  background-color: var(--gray-100);
+}
+
+.edit-icon-inline {
+  margin-left: 0.25rem;
+  opacity: 0.5;
+  vertical-align: middle;
+}
+
+.subtitle-edit-container {
+  width: 100%;
+  margin-top: 0.25rem;
+}
+
+.subtitle-edit-input {
+  width: 100%;
+  font-size: 0.75rem;
+  color: var(--gray-600);
+  font-style: italic;
+  line-height: 1.4;
+  border: 2px solid var(--primary-yellow);
+  border-radius: 4px;
+  padding: 0.5rem;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 60px;
+}
+
+.subtitle-edit-input:focus {
+  outline: none;
+  border-color: var(--primary-black);
 }
 
 .section-content {

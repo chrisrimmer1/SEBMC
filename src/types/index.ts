@@ -28,6 +28,8 @@ export type SectionId =
 export interface CanvasData {
   sections: Record<SectionId, CanvasSection>;
   lastModified: string;
+  canvasTitle?: string;
+  canvasSubtitle?: string;
 }
 
 export interface AuthState {

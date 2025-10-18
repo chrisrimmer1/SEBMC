@@ -67,7 +67,9 @@ export function getInitialCanvasData(): CanvasData {
         icon: 'piggy-bank'
       }
     },
-    lastModified: new Date().toISOString()
+    lastModified: new Date().toISOString(),
+    canvasTitle: 'Social Enterprise Business Model Canvas',
+    canvasSubtitle: 'Plan your social impact venture'
   };
 }
 
