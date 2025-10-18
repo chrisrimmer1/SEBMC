@@ -1,7 +1,9 @@
 // Simple markdown parser for canvas subtitle
 // Supports: **bold**, *italic*, and line breaks
 
-export function parseMarkdown(text: string): JSX.Element {
+import React from 'react';
+
+export function parseMarkdown(text: string): React.ReactElement {
   if (!text) return <></>;
 
   // Split by lines first to preserve line breaks
@@ -10,7 +12,7 @@ export function parseMarkdown(text: string): JSX.Element {
   return (
     <>
       {lines.map((line, lineIndex) => {
-        const parts: JSX.Element[] = [];
+        const parts: React.ReactElement[] = [];
         let remaining = line;
         let keyCounter = 0;
 
