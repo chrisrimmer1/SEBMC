@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { AuthState } from '../types';
+import type { AuthState } from '../types';
 
 const CORRECT_PASSWORD_HASH = '1feb5334d184e393d997e5cd92951f013b1d8ceffce37e329419586b86fe400d'; // SHA-256 of "jobshapedobject"
 const AUTH_STORAGE_KEY = 'sebmcAuth';

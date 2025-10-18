@@ -1,6 +1,6 @@
 import { Draggable } from '@hello-pangea/dnd';
 import { GripVertical, X } from 'lucide-react';
-import { ContentItem as ContentItemType } from '../types';
+import type { ContentItem as ContentItemType } from '../types';
 
 interface ContentItemProps {
   item: ContentItemType;

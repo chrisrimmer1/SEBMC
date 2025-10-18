@@ -1,4 +1,4 @@
-import { CanvasData } from '../types';
+import type { CanvasData } from '../types';
 
 export function getInitialCanvasData(): CanvasData {
   return {

@@ -1,6 +1,7 @@
-import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd';
+import { DragDropContext, Droppable } from '@hello-pangea/dnd';
+import type { DropResult } from '@hello-pangea/dnd';
 import { Plus } from 'lucide-react';
-import { CanvasSection as CanvasSectionType, ContentItem as ContentItemType, SectionId } from '../types';
+import type { CanvasSection as CanvasSectionType, ContentItem as ContentItemType, SectionId } from '../types';
 import { ContentItem } from './ContentItem';
 import { generateId } from '../utils/initialData';
 

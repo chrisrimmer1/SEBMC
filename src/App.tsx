@@ -4,8 +4,8 @@ import { Sidebar } from './components/Sidebar';
 import { CanvasSection } from './components/CanvasSection';
 import { EditModal } from './components/EditModal';
 import { useAuth } from './hooks/useAuth';
-import { useCanvasData } from './hooks/useCanvasData';
-import { ContentItem, SectionId } from './types';
+import { useCanvasDataDB as useCanvasData } from './hooks/useCanvasDataDB'; // Changed to database version
+import type { ContentItem, SectionId } from './types';
 import './App.css';
 
 function App() {
@@ -61,89 +61,95 @@ function App() {
         </div>
 
         <div className="business-model-canvas">
-          {/* Row 1: Social problem, Service portfolio, Core value, Beneficiaries, Impact */}
-          <div className="canvas-row row-1">
-            <CanvasSection
-              section={sections['social-problem']}
-              isEditMode={isAuthenticated}
-              onAddItem={addItem}
-              onEditItem={(item) => handleEditItem('social-problem', item)}
-              onDeleteItem={deleteItem}
-              onReorderItems={reorderItems}
-            />
-            <CanvasSection
-              section={sections['service-portfolio']}
-              isEditMode={isAuthenticated}
-              onAddItem={addItem}
-              onEditItem={(item) => handleEditItem('service-portfolio', item)}
-              onDeleteItem={deleteItem}
-              onReorderItems={reorderItems}
-            />
-            <CanvasSection
-              section={sections['core-value']}
-              isEditMode={isAuthenticated}
-              onAddItem={addItem}
-              onEditItem={(item) => handleEditItem('core-value', item)}
-              onDeleteItem={deleteItem}
-              onReorderItems={reorderItems}
-            />
-            <CanvasSection
-              section={sections['beneficiaries']}
-              isEditMode={isAuthenticated}
-              onAddItem={addItem}
-              onEditItem={(item) => handleEditItem('beneficiaries', item)}
-              onDeleteItem={deleteItem}
-              onReorderItems={reorderItems}
-            />
-            <CanvasSection
-              section={sections['impact']}
-              isEditMode={isAuthenticated}
-              onAddItem={addItem}
-              onEditItem={(item) => handleEditItem('impact', item)}
-              onDeleteItem={deleteItem}
-              onReorderItems={reorderItems}
-            />
-          </div>
+          {/* Column 1: Social Problem (top) + Network Partners (bottom) */}
+          <CanvasSection
+            section={sections['social-problem']}
+            isEditMode={isAuthenticated}
+            onAddItem={addItem}
+            onEditItem={(item) => handleEditItem('social-problem', item)}
+            onDeleteItem={deleteItem}
+            onReorderItems={reorderItems}
+          />
 
-          {/* Row 2: Network partners and Channels */}
-          <div className="canvas-row row-2">
-            <CanvasSection
-              section={sections['network-partners']}
-              isEditMode={isAuthenticated}
-              onAddItem={addItem}
-              onEditItem={(item) => handleEditItem('network-partners', item)}
-              onDeleteItem={deleteItem}
-              onReorderItems={reorderItems}
-            />
-            <CanvasSection
-              section={sections['channels']}
-              isEditMode={isAuthenticated}
-              onAddItem={addItem}
-              onEditItem={(item) => handleEditItem('channels', item)}
-              onDeleteItem={deleteItem}
-              onReorderItems={reorderItems}
-            />
-          </div>
+          {/* Column 2: Service Portfolio (tall) */}
+          <CanvasSection
+            section={sections['service-portfolio']}
+            isEditMode={isAuthenticated}
+            onAddItem={addItem}
+            onEditItem={(item) => handleEditItem('service-portfolio', item)}
+            onDeleteItem={deleteItem}
+            onReorderItems={reorderItems}
+          />
 
-          {/* Row 3: Costs and Revenue stream */}
-          <div className="canvas-row row-3">
-            <CanvasSection
-              section={sections['costs']}
-              isEditMode={isAuthenticated}
-              onAddItem={addItem}
-              onEditItem={(item) => handleEditItem('costs', item)}
-              onDeleteItem={deleteItem}
-              onReorderItems={reorderItems}
-            />
-            <CanvasSection
-              section={sections['revenue-stream']}
-              isEditMode={isAuthenticated}
-              onAddItem={addItem}
-              onEditItem={(item) => handleEditItem('revenue-stream', item)}
-              onDeleteItem={deleteItem}
-              onReorderItems={reorderItems}
-            />
-          </div>
+          {/* Column 3: Core Value (tall) */}
+          <CanvasSection
+            section={sections['core-value']}
+            isEditMode={isAuthenticated}
+            onAddItem={addItem}
+            onEditItem={(item) => handleEditItem('core-value', item)}
+            onDeleteItem={deleteItem}
+            onReorderItems={reorderItems}
+          />
+
+          {/* Column 4: Beneficiaries (top) */}
+          <CanvasSection
+            section={sections['beneficiaries']}
+            isEditMode={isAuthenticated}
+            onAddItem={addItem}
+            onEditItem={(item) => handleEditItem('beneficiaries', item)}
+            onDeleteItem={deleteItem}
+            onReorderItems={reorderItems}
+          />
+
+          {/* Column 5: Impact (tall) */}
+          <CanvasSection
+            section={sections['impact']}
+            isEditMode={isAuthenticated}
+            onAddItem={addItem}
+            onEditItem={(item) => handleEditItem('impact', item)}
+            onDeleteItem={deleteItem}
+            onReorderItems={reorderItems}
+          />
+
+          {/* Column 1 bottom: Network Partners */}
+          <CanvasSection
+            section={sections['network-partners']}
+            isEditMode={isAuthenticated}
+            onAddItem={addItem}
+            onEditItem={(item) => handleEditItem('network-partners', item)}
+            onDeleteItem={deleteItem}
+            onReorderItems={reorderItems}
+          />
+
+          {/* Column 4 bottom: Channels */}
+          <CanvasSection
+            section={sections['channels']}
+            isEditMode={isAuthenticated}
+            onAddItem={addItem}
+            onEditItem={(item) => handleEditItem('channels', item)}
+            onDeleteItem={deleteItem}
+            onReorderItems={reorderItems}
+          />
+
+          {/* Bottom row: Costs */}
+          <CanvasSection
+            section={sections['costs']}
+            isEditMode={isAuthenticated}
+            onAddItem={addItem}
+            onEditItem={(item) => handleEditItem('costs', item)}
+            onDeleteItem={deleteItem}
+            onReorderItems={reorderItems}
+          />
+
+          {/* Bottom row: Revenue Stream */}
+          <CanvasSection
+            section={sections['revenue-stream']}
+            isEditMode={isAuthenticated}
+            onAddItem={addItem}
+            onEditItem={(item) => handleEditItem('revenue-stream', item)}
+            onDeleteItem={deleteItem}
+            onReorderItems={reorderItems}
+          />
         </div>
 
         <footer className="app-footer">

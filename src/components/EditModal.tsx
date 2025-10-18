@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
-import { ContentItem } from '../types';
+import type { ContentItem } from '../types';
 
 interface EditModalProps {
   item: ContentItem | null;

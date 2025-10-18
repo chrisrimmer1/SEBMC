@@ -8,7 +8,7 @@ interface HeaderProps {
   onLogout: () => void;
 }
 
-export function Header({ isAuthenticated, mode, onLogin, onLogout }: HeaderProps) {
+export function Header({ isAuthenticated, onLogin, onLogout }: HeaderProps) {
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
