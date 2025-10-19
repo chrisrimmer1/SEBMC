@@ -152,7 +152,9 @@ export async function exportToPDF(canvasData: CanvasData): Promise<void> {
 
   const footerHtml = `
     <div style="padding-top: 15px; border-top: 2px solid #000; text-align: center;">
-      <p style="font-size: 10px; color: #666; margin: 5px 0;">Re-created with React + TypeScript based on original SEBMC by HotCubator</p>
+      <p style="font-size: 10px; color: #666; margin: 5px 0;">Re-created by HotCubator based on original BMC by Strategyzer.</p>
+      <p style="font-size: 10px; color: #666; margin: 5px 0;">Use this Canvas with attribution to HotCubator.</p>
+      <p style="font-size: 9px; color: #999; margin: 5px 0;">hotcubator.com.au/social-entrepreneurship/social-enterprise-business-model-canvas</p>
       <p style="font-size: 10px; color: #666; margin: 5px 0;">Exported: ${currentDate}</p>
     </div>
   `;

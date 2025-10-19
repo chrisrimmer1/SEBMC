@@ -256,7 +256,19 @@ function App() {
         </div>
 
         <footer className="app-footer">
-          <p>Re-created with React + TypeScript based on original SEBMC by HotCubator</p>
+          <p>
+            Re-created by HotCubator based on original BMC by Strategyzer.
+            Use this Canvas with attribution to HotCubator.
+          </p>
+          <p>
+            <a
+              href="https://hotcubator.com.au/social-entrepreneurship/social-enterprise-business-model-canvas/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              hotcubator.com.au/social-entrepreneurship/social-enterprise-business-model-canvas
+            </a>
+          </p>
         </footer>
       </main>
 
