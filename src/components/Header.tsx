@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Lock, Unlock, Eye, Edit3 } from 'lucide-react';
+import { ThemeToggle } from './ThemeToggle';
 
 interface HeaderProps {
   isAuthenticated: boolean;
@@ -42,6 +43,7 @@ export function Header({ isAuthenticated, onLogin, onLogout }: HeaderProps) {
           <h1>Social Enterprise Business Model Canvas</h1>
 
           <div className="mode-indicator">
+            <ThemeToggle />
             {isAuthenticated ? (
               <>
                 <div className="edit-mode-badge">
