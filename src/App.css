@@ -144,6 +144,12 @@ body {
   transform: translateY(-1px);
 }
 
+.btn-icon svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
 .theme-toggle {
   border: 2px solid var(--border-color);
 }
@@ -843,8 +849,19 @@ kbd {
   .sidebar-toggle,
   .add-item-btn,
   .delete-btn,
-  .drag-handle,
+  .drag-handle {
+    display: none !important;
+  }
+
+  /* Show only theme toggle on mobile, hide mode badges and lock/unlock buttons */
   .mode-indicator {
+    display: flex !important;
+    justify-content: center;
+  }
+
+  .edit-mode-badge,
+  .view-mode-badge,
+  .mode-indicator .btn-small {
     display: none !important;
   }
 
