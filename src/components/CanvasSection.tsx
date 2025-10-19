@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 import type { DropResult } from '@hello-pangea/dnd';
-import { Plus, Edit2 } from 'lucide-react';
+import { Plus, Edit2, HelpCircle } from 'lucide-react';
 import type { CanvasSection as CanvasSectionType, ContentItem as ContentItemType, SectionId } from '../types';
 import { ContentItem } from './ContentItem';
 import { generateId } from '../utils/initialData';
@@ -14,6 +14,7 @@ interface CanvasSectionProps {
   onDeleteItem: (sectionId: SectionId, itemId: string) => void;
   onReorderItems: (sectionId: SectionId, items: ContentItemType[]) => void;
   onUpdateSubtitle: (sectionId: SectionId, subtitle: string) => void;
+  onShowSeedQuestions: (sectionId: SectionId) => void;
 }
 
 export function CanvasSection({
@@ -23,7 +24,8 @@ export function CanvasSection({
   onEditItem,
   onDeleteItem,
   onReorderItems,
-  onUpdateSubtitle
+  onUpdateSubtitle,
+  onShowSeedQuestions
 }: CanvasSectionProps) {
   const [isEditingSubtitle, setIsEditingSubtitle] = useState(false);
   const [editedSubtitle, setEditedSubtitle] = useState(section.subtitle);
@@ -76,7 +78,18 @@ export function CanvasSection({
   return (
     <div className={`canvas-section ${section.id}`}>
       <div className="section-header">
-        <h3>{section.title}</h3>
+        <div className="section-title-row">
+          <h3>{section.title}</h3>
+          {isEditMode && (
+            <button
+              className="btn btn-icon btn-help"
+              onClick={() => onShowSeedQuestions(section.id)}
+              title="Show guiding questions"
+            >
+              <HelpCircle size={16} />
+            </button>
+          )}
+        </div>
         {isEditingSubtitle ? (
           <div className="subtitle-edit-container">
             <textarea

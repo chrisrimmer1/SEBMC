@@ -3,6 +3,7 @@ import { Header } from './components/Header';
 import { Sidebar } from './components/Sidebar';
 import { CanvasSection } from './components/CanvasSection';
 import { EditModal } from './components/EditModal';
+import { SeedQuestionsModal } from './components/SeedQuestionsModal';
 import { useAuth } from './hooks/useAuth';
 import { useTheme } from './hooks/useTheme';
 import { useCanvasDataDB as useCanvasData } from './hooks/useCanvasDataDB'; // Changed to database version
@@ -34,6 +35,7 @@ function App() {
   const [editingCanvasSubtitle, setEditingCanvasSubtitle] = useState(false);
   const [tempCanvasTitle, setTempCanvasTitle] = useState('');
   const [tempCanvasSubtitle, setTempCanvasSubtitle] = useState('');
+  const [showSeedQuestions, setShowSeedQuestions] = useState<SectionId | null>(null);
 
   const handleEditItem = (sectionId: SectionId, item: ContentItem) => {
     setEditingItem({ sectionId, item });
@@ -164,6 +166,7 @@ function App() {
             onDeleteItem={deleteItem}
             onReorderItems={reorderItems}
             onUpdateSubtitle={updateSubtitle}
+            onShowSeedQuestions={setShowSeedQuestions}
           />
 
           {/* Column 2: Service Portfolio (tall) */}
@@ -175,6 +178,7 @@ function App() {
             onDeleteItem={deleteItem}
             onReorderItems={reorderItems}
             onUpdateSubtitle={updateSubtitle}
+            onShowSeedQuestions={setShowSeedQuestions}
           />
 
           {/* Column 3: Core Value (tall) */}
@@ -186,6 +190,7 @@ function App() {
             onDeleteItem={deleteItem}
             onReorderItems={reorderItems}
             onUpdateSubtitle={updateSubtitle}
+            onShowSeedQuestions={setShowSeedQuestions}
           />
 
           {/* Column 4: Beneficiaries (top) */}
@@ -197,6 +202,7 @@ function App() {
             onDeleteItem={deleteItem}
             onReorderItems={reorderItems}
             onUpdateSubtitle={updateSubtitle}
+            onShowSeedQuestions={setShowSeedQuestions}
           />
 
           {/* Column 5: Impact (tall) */}
@@ -208,6 +214,7 @@ function App() {
             onDeleteItem={deleteItem}
             onReorderItems={reorderItems}
             onUpdateSubtitle={updateSubtitle}
+            onShowSeedQuestions={setShowSeedQuestions}
           />
 
           {/* Column 1 bottom: Network Partners */}
@@ -219,6 +226,7 @@ function App() {
             onDeleteItem={deleteItem}
             onReorderItems={reorderItems}
             onUpdateSubtitle={updateSubtitle}
+            onShowSeedQuestions={setShowSeedQuestions}
           />
 
           {/* Column 4 bottom: Channels */}
@@ -230,6 +238,7 @@ function App() {
             onDeleteItem={deleteItem}
             onReorderItems={reorderItems}
             onUpdateSubtitle={updateSubtitle}
+            onShowSeedQuestions={setShowSeedQuestions}
           />
 
           {/* Bottom row: Costs */}
@@ -241,6 +250,7 @@ function App() {
             onDeleteItem={deleteItem}
             onReorderItems={reorderItems}
             onUpdateSubtitle={updateSubtitle}
+            onShowSeedQuestions={setShowSeedQuestions}
           />
 
           {/* Bottom row: Revenue Stream */}
@@ -252,6 +262,7 @@ function App() {
             onDeleteItem={deleteItem}
             onReorderItems={reorderItems}
             onUpdateSubtitle={updateSubtitle}
+            onShowSeedQuestions={setShowSeedQuestions}
           />
         </div>
 
@@ -276,6 +287,13 @@ function App() {
         onClose={() => setEditingItem(null)}
         onSave={handleSaveEdit}
       />
+
+      {showSeedQuestions && (
+        <SeedQuestionsModal
+          sectionId={showSeedQuestions}
+          onClose={() => setShowSeedQuestions(null)}
+        />
+      )}
     </div>
   );
 }

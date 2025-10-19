@@ -306,11 +306,30 @@ body {
   padding-bottom: 0.75rem;
 }
 
+.section-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+
 .section-header h3 {
   font-size: 1.125rem;
   color: var(--primary-black);
   font-weight: 700;
-  margin-bottom: 0.25rem;
+  margin: 0;
+}
+
+.btn-help {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.btn-help:hover {
+  opacity: 1;
 }
 
 .section-subtitle {
@@ -735,6 +754,46 @@ kbd {
   gap: 1rem;
   padding: 1.5rem;
   border-top: 2px solid var(--primary-yellow);
+}
+
+/* Seed Questions Modal */
+.seed-questions-modal {
+  max-width: 600px;
+}
+
+.seed-emoji {
+  font-size: 1.5rem;
+  margin-right: 0.5rem;
+}
+
+.seed-intro {
+  font-size: 1rem;
+  color: var(--gray-600);
+  margin-bottom: 1.5rem;
+  font-style: italic;
+}
+
+.seed-questions-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.seed-questions-list li {
+  padding: 0.875rem 1rem;
+  margin-bottom: 0.75rem;
+  background: var(--gray-100);
+  border-left: 4px solid var(--primary-yellow);
+  border-radius: 4px;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--text-primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.seed-questions-list li:hover {
+  transform: translateX(4px);
+  box-shadow: var(--shadow-sm);
 }
 
 /* Buttons */
