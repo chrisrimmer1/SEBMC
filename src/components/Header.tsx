@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Lock, Unlock, Eye, Edit3, Sun, Moon } from 'lucide-react';
+import { Lock, Unlock, Eye, Edit3, Sun, Moon, FileDown } from 'lucide-react';
 
 interface HeaderProps {
   isAuthenticated: boolean;
@@ -8,9 +8,10 @@ interface HeaderProps {
   onLogout: () => void;
   theme: 'light' | 'dark';
   onToggleTheme: () => void;
+  onExportPDF: () => void;
 }
 
-export function Header({ isAuthenticated, onLogin, onLogout, theme, onToggleTheme }: HeaderProps) {
+export function Header({ isAuthenticated, onLogin, onLogout, theme, onToggleTheme, onExportPDF }: HeaderProps) {
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
@@ -44,6 +45,14 @@ export function Header({ isAuthenticated, onLogin, onLogout, theme, onToggleThem
           <h1>Social Enterprise Business Model Canvas</h1>
 
           <div className="mode-indicator">
+            <button
+              className="btn btn-icon pdf-export"
+              onClick={onExportPDF}
+              title="Export canvas to PDF"
+            >
+              <FileDown size={16} />
+            </button>
+
             <button
               className="btn btn-icon theme-toggle"
               onClick={onToggleTheme}

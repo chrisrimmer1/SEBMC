@@ -8,6 +8,7 @@ import { useTheme } from './hooks/useTheme';
 import { useCanvasDataDB as useCanvasData } from './hooks/useCanvasDataDB'; // Changed to database version
 import type { ContentItem, SectionId } from './types';
 import { parseMarkdown } from './utils/markdown';
+import { exportToPDF } from './utils/exportPDF';
 import './App.css';
 
 function App() {
@@ -69,6 +70,15 @@ function App() {
     setEditingCanvasSubtitle(false);
   };
 
+  const handleExportPDF = async () => {
+    try {
+      await exportToPDF(canvasData);
+    } catch (error) {
+      console.error('Error exporting PDF:', error);
+      alert('Failed to export PDF. Please try again.');
+    }
+  };
+
   const sections = canvasData.sections;
 
   return (
@@ -80,6 +90,7 @@ function App() {
         onLogout={logout}
         theme={theme}
         onToggleTheme={toggleTheme}
+        onExportPDF={handleExportPDF}
       />
 
       <Sidebar
