@@ -4,6 +4,7 @@ import { Sidebar } from './components/Sidebar';
 import { CanvasSection } from './components/CanvasSection';
 import { EditModal } from './components/EditModal';
 import { useAuth } from './hooks/useAuth';
+import { useTheme } from './hooks/useTheme';
 import { useCanvasDataDB as useCanvasData } from './hooks/useCanvasDataDB'; // Changed to database version
 import type { ContentItem, SectionId } from './types';
 import { parseMarkdown } from './utils/markdown';
@@ -11,6 +12,7 @@ import './App.css';
 
 function App() {
   const { isAuthenticated, mode, login, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const {
     canvasData,
     lastSaved,
@@ -76,6 +78,8 @@ function App() {
         mode={mode}
         onLogin={login}
         onLogout={logout}
+        theme={theme}
+        onToggleTheme={toggleTheme}
       />
 
       <Sidebar

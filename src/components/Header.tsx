@@ -1,14 +1,16 @@
 import { useState } from 'react';
-import { Lock, Unlock, Eye, Edit3 } from 'lucide-react';
+import { Lock, Unlock, Eye, Edit3, Sun, Moon } from 'lucide-react';
 
 interface HeaderProps {
   isAuthenticated: boolean;
   mode: 'view' | 'edit';
   onLogin: (password: string) => Promise<boolean>;
   onLogout: () => void;
+  theme: 'light' | 'dark';
+  onToggleTheme: () => void;
 }
 
-export function Header({ isAuthenticated, onLogin, onLogout }: HeaderProps) {
+export function Header({ isAuthenticated, onLogin, onLogout, theme, onToggleTheme }: HeaderProps) {
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
@@ -42,6 +44,14 @@ export function Header({ isAuthenticated, onLogin, onLogout }: HeaderProps) {
           <h1>Social Enterprise Business Model Canvas</h1>
 
           <div className="mode-indicator">
+            <button
+              className="btn btn-icon theme-toggle"
+              onClick={onToggleTheme}
+              title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+            >
+              {theme === 'light' ? <Moon size={16} /> : <Sun size={16} />}
+            </button>
+
             {isAuthenticated ? (
               <>
                 <div className="edit-mode-badge">
