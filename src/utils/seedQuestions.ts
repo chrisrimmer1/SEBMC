@@ -27,7 +27,7 @@ export const seedQuestions: Record<SectionId, SeedQuestion> = {
       'What results do participants or clients see?'
     ]
   },
-  'core-value-offerings': {
+  'core-value': {
     emoji: '💡',
     title: 'Core Value Offerings',
     questions: [
