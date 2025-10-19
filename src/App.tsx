@@ -257,17 +257,15 @@ function App() {
 
         <footer className="app-footer">
           <p>
-            Re-created by HotCubator based on original BMC by Strategyzer.
-            Use this Canvas with attribution to HotCubator.
-          </p>
-          <p>
+            Based on the Social Enterprise Business Model Canvas by{' '}
             <a
               href="https://hotcubator.com.au/social-entrepreneurship/social-enterprise-business-model-canvas/"
               target="_blank"
               rel="noopener noreferrer"
             >
-              hotcubator.com.au/social-entrepreneurship/social-enterprise-business-model-canvas
+              HotCubator
             </a>
+            , adapted from the original Business Model Canvas by Alexander Osterwalder.
           </p>
         </footer>
       </main>
