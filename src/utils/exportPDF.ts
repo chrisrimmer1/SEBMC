@@ -1,6 +1,6 @@
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-import type { CanvasData } from '../types';
+import type { CanvasData, ContentItem, SectionId } from '../types';
 
 export async function exportToPDF(canvasData: CanvasData): Promise<void> {
   const pdf = new jsPDF('p', 'mm', 'a4');
@@ -10,7 +10,6 @@ export async function exportToPDF(canvasData: CanvasData): Promise<void> {
   const contentWidth = pageWidth - (2 * margin);
 
   let currentY = margin;
-  let isFirstPage = true;
 
   // Helper function to add new page if needed
   const checkPageBreak = (requiredHeight: number) => {
@@ -23,7 +22,7 @@ export async function exportToPDF(canvasData: CanvasData): Promise<void> {
   };
 
   // Helper function to render HTML to canvas and add to PDF
-  const addHtmlElement = async (html: string, maxHeight?: number): Promise<number> => {
+  const addHtmlElement = async (html: string): Promise<number> => {
     const container = document.createElement('div');
     container.style.position = 'absolute';
     container.style.left = '-9999px';
@@ -81,10 +80,10 @@ export async function exportToPDF(canvasData: CanvasData): Promise<void> {
   currentY += 5; // Add some spacing
 
   // Section order for stacked layout
-  const sectionOrder = [
+  const sectionOrder: SectionId[] = [
     'social-problem',
     'service-portfolio',
-    'core-value-offerings',
+    'core-value',
     'beneficiaries',
     'impact',
     'network-partners',
@@ -108,8 +107,8 @@ export async function exportToPDF(canvasData: CanvasData): Promise<void> {
     `;
 
     if (section.items && section.items.length > 0) {
-      section.items.forEach(item => {
-        const descriptionLines = item.description.split('\n').map(line => {
+      section.items.forEach((item: ContentItem) => {
+        const descriptionLines = item.description.split('\n').map((line: string) => {
           const trimmed = line.trim();
           if (trimmed.startsWith('-') || trimmed.startsWith('•')) {
             return `<div style="padding-left: 18px; position: relative; margin: 2px 0;"><span style="position: absolute; left: 0; font-weight: bold;">•</span> ${trimmed.substring(1).trim()}</div>`;

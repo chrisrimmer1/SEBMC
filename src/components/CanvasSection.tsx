@@ -83,7 +83,7 @@ export function CanvasSection({
           {isEditMode && (
             <button
               className="btn btn-icon btn-help"
-              onClick={() => onShowSeedQuestions(section.id)}
+              onClick={() => onShowSeedQuestions(section.id as SectionId)}
               title="Show guiding questions"
             >
               <HelpCircle size={16} />
