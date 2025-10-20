@@ -66,7 +66,7 @@ export async function exportToPDF(canvasData: CanvasData): Promise<void> {
   };
 
   // Title and subtitle
-  const title = canvasData.canvasTitle || 'Social Enterprise Business Model Canvas';
+  const title = canvasData.headerTitle || 'Social Enterprise Business Model Canvas';
   const subtitle = canvasData.canvasSubtitle || 'Plan your social impact venture';
 
   const headerHtml = `

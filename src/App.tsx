@@ -23,7 +23,6 @@ function App() {
     deleteItem,
     reorderItems,
     updateSubtitle,
-    updateCanvasTitle,
     updateCanvasSubtitle,
     updateHeaderTitle,
     exportData,
@@ -33,10 +32,8 @@ function App() {
 
   const [editingItem, setEditingItem] = useState<{ sectionId: SectionId; item: ContentItem } | null>(null);
   const [editingHeaderTitle, setEditingHeaderTitle] = useState(false);
-  const [editingCanvasTitle, setEditingCanvasTitle] = useState(false);
   const [editingCanvasSubtitle, setEditingCanvasSubtitle] = useState(false);
   const [tempHeaderTitle, setTempHeaderTitle] = useState('');
-  const [tempCanvasTitle, setTempCanvasTitle] = useState('');
   const [tempCanvasSubtitle, setTempCanvasSubtitle] = useState('');
   const [showSeedQuestions, setShowSeedQuestions] = useState<SectionId | null>(null);
 
@@ -58,13 +55,6 @@ function App() {
     }
   };
 
-  const handleCanvasTitleClick = () => {
-    if (isAuthenticated) {
-      setTempCanvasTitle(canvasData.canvasTitle || 'Social Enterprise Business Model Canvas');
-      setEditingCanvasTitle(true);
-    }
-  };
-
   const handleCanvasSubtitleClick = () => {
     if (isAuthenticated) {
       setTempCanvasSubtitle(canvasData.canvasSubtitle || 'Plan your social impact venture');
@@ -75,11 +65,6 @@ function App() {
   const handleSaveHeaderTitle = () => {
     updateHeaderTitle(tempHeaderTitle);
     setEditingHeaderTitle(false);
-  };
-
-  const handleSaveCanvasTitle = () => {
-    updateCanvasTitle(tempCanvasTitle);
-    setEditingCanvasTitle(false);
   };
 
   const handleSaveCanvasSubtitle = () => {
@@ -127,29 +112,6 @@ function App() {
 
       <main className="main-content">
         <div className="canvas-header">
-          {editingCanvasTitle ? (
-            <input
-              type="text"
-              className="canvas-title-edit"
-              value={tempCanvasTitle}
-              onChange={(e) => setTempCanvasTitle(e.target.value)}
-              onBlur={handleSaveCanvasTitle}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') handleSaveCanvasTitle();
-                if (e.key === 'Escape') setEditingCanvasTitle(false);
-              }}
-              autoFocus
-            />
-          ) : (
-            <h2
-              className={isAuthenticated ? 'editable-canvas-heading' : ''}
-              onClick={handleCanvasTitleClick}
-              title={isAuthenticated ? 'Click to edit title' : ''}
-            >
-              {canvasData.canvasTitle || 'Social Enterprise Business Model Canvas'}
-            </h2>
-          )}
-
           {editingCanvasSubtitle ? (
             <textarea
               className="canvas-subtitle-edit"
