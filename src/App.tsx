@@ -25,14 +25,17 @@ function App() {
     updateSubtitle,
     updateCanvasTitle,
     updateCanvasSubtitle,
+    updateHeaderTitle,
     exportData,
     importData,
     clearData
   } = useCanvasData();
 
   const [editingItem, setEditingItem] = useState<{ sectionId: SectionId; item: ContentItem } | null>(null);
+  const [editingHeaderTitle, setEditingHeaderTitle] = useState(false);
   const [editingCanvasTitle, setEditingCanvasTitle] = useState(false);
   const [editingCanvasSubtitle, setEditingCanvasSubtitle] = useState(false);
+  const [tempHeaderTitle, setTempHeaderTitle] = useState('');
   const [tempCanvasTitle, setTempCanvasTitle] = useState('');
   const [tempCanvasSubtitle, setTempCanvasSubtitle] = useState('');
   const [showSeedQuestions, setShowSeedQuestions] = useState<SectionId | null>(null);
@@ -48,6 +51,13 @@ function App() {
     }
   };
 
+  const handleHeaderTitleClick = () => {
+    if (isAuthenticated) {
+      setTempHeaderTitle(canvasData.headerTitle || 'Social Enterprise Business Model Canvas');
+      setEditingHeaderTitle(true);
+    }
+  };
+
   const handleCanvasTitleClick = () => {
     if (isAuthenticated) {
       setTempCanvasTitle(canvasData.canvasTitle || 'Social Enterprise Business Model Canvas');
@@ -60,6 +70,11 @@ function App() {
       setTempCanvasSubtitle(canvasData.canvasSubtitle || 'Plan your social impact venture');
       setEditingCanvasSubtitle(true);
     }
+  };
+
+  const handleSaveHeaderTitle = () => {
+    updateHeaderTitle(tempHeaderTitle);
+    setEditingHeaderTitle(false);
   };
 
   const handleSaveCanvasTitle = () => {
@@ -93,8 +108,13 @@ function App() {
         theme={theme}
         onSetTheme={setTheme}
         onExportPDF={handleExportPDF}
-        canvasTitle={canvasData.canvasTitle}
-        onTitleClick={handleCanvasTitleClick}
+        headerTitle={canvasData.headerTitle}
+        editingHeaderTitle={editingHeaderTitle}
+        tempHeaderTitle={tempHeaderTitle}
+        onHeaderTitleClick={handleHeaderTitleClick}
+        onHeaderTitleChange={setTempHeaderTitle}
+        onHeaderTitleSave={handleSaveHeaderTitle}
+        onHeaderTitleCancel={() => setEditingHeaderTitle(false)}
       />
 
       <Sidebar

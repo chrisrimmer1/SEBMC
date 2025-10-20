@@ -214,6 +214,18 @@ export function useCanvasDataDB() {
     });
   }, [saveData]);
 
+  // Update header title
+  const updateHeaderTitle = useCallback((title: string) => {
+    setCanvasData(prev => {
+      const newData = {
+        ...prev,
+        headerTitle: title
+      };
+      saveData(newData);
+      return newData;
+    });
+  }, [saveData]);
+
   // Clear all data
   const clearData = useCallback(() => {
     if (confirm('Are you sure you want to clear all data?')) {
@@ -234,6 +246,7 @@ export function useCanvasDataDB() {
     updateSubtitle,
     updateCanvasTitle,
     updateCanvasSubtitle,
+    updateHeaderTitle,
     exportData,
     importData,
     clearData

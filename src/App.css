@@ -212,6 +212,25 @@ body {
   background-color: var(--gray-100);
 }
 
+.header-title-edit {
+  font-size: 1.5rem;
+  font-weight: 700;
+  padding: 0.25rem 0.5rem;
+  border: 2px solid var(--primary-yellow);
+  border-radius: 6px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: inherit;
+  width: 100%;
+  max-width: 600px;
+}
+
+.header-title-edit:focus {
+  outline: none;
+  border-color: var(--primary-yellow);
+  box-shadow: 0 0 0 3px rgba(244, 196, 48, 0.1);
+}
+
 .mode-indicator {
   display: flex;
   align-items: center;
