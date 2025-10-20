@@ -14,7 +14,7 @@ import './App.css';
 
 function App() {
   const { isAuthenticated, mode, login, logout } = useAuth();
-  const { theme, toggleTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
   const {
     canvasData,
     lastSaved,
@@ -91,7 +91,7 @@ function App() {
         onLogin={login}
         onLogout={logout}
         theme={theme}
-        onToggleTheme={toggleTheme}
+        onSetTheme={setTheme}
         onExportPDF={handleExportPDF}
       />
 

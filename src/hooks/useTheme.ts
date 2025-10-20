@@ -1,21 +1,20 @@
 import { useState, useEffect } from 'react';
-
-type Theme = 'light' | 'dark';
+import type { ThemeName } from '../utils/themes';
 
 export function useTheme() {
-  const [theme, setTheme] = useState<Theme>(() => {
+  const [theme, setTheme] = useState<ThemeName>(() => {
     // Check localStorage first
-    const savedTheme = localStorage.getItem('sebmc-theme') as Theme | null;
+    const savedTheme = localStorage.getItem('sebmc-theme') as ThemeName | null;
     if (savedTheme) {
       return savedTheme;
     }
 
     // Check system preference
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      return 'dark';
+      return 'midnight';
     }
 
-    return 'light';
+    return 'chris';
   });
 
   useEffect(() => {
@@ -26,9 +25,5 @@ export function useTheme() {
     localStorage.setItem('sebmc-theme', theme);
   }, [theme]);
 
-  const toggleTheme = () => {
-    setTheme(prev => prev === 'light' ? 'dark' : 'light');
-  };
-
-  return { theme, toggleTheme };
+  return { theme, setTheme };
 }

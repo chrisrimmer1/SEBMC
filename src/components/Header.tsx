@@ -1,20 +1,24 @@
 import { useState } from 'react';
-import { Lock, Unlock, Eye, Edit3, Sun, Moon, FileDown } from 'lucide-react';
+import { Lock, Unlock, Eye, Edit3, FileDown, Palette } from 'lucide-react';
+import { themes, getThemeConfig, type ThemeName } from '../utils/themes';
 
 interface HeaderProps {
   isAuthenticated: boolean;
   mode: 'view' | 'edit';
   onLogin: (password: string) => Promise<boolean>;
   onLogout: () => void;
-  theme: 'light' | 'dark';
-  onToggleTheme: () => void;
+  theme: ThemeName;
+  onSetTheme: (theme: ThemeName) => void;
   onExportPDF: () => void;
 }
 
-export function Header({ isAuthenticated, onLogin, onLogout, theme, onToggleTheme, onExportPDF }: HeaderProps) {
+export function Header({ isAuthenticated, onLogin, onLogout, theme, onSetTheme, onExportPDF }: HeaderProps) {
   const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [showThemeMenu, setShowThemeMenu] = useState(false);
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
+
+  const currentTheme = getThemeConfig(theme);
 
   const handleLogin = async () => {
     const success = await onLogin(password);
@@ -53,13 +57,35 @@ export function Header({ isAuthenticated, onLogin, onLogout, theme, onToggleThem
               <FileDown size={16} />
             </button>
 
-            <button
-              className="btn btn-icon theme-toggle"
-              onClick={onToggleTheme}
-              title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-            >
-              {theme === 'light' ? <Moon size={16} /> : <Sun size={16} />}
-            </button>
+            <div className="theme-selector">
+              <button
+                className="btn btn-icon theme-toggle"
+                onClick={() => setShowThemeMenu(!showThemeMenu)}
+                title="Change theme"
+              >
+                <Palette size={16} />
+                <span className="theme-name">{currentTheme.icon} {currentTheme.name}</span>
+              </button>
+
+              {showThemeMenu && (
+                <div className="theme-dropdown">
+                  {themes.map((t) => (
+                    <button
+                      key={t.id}
+                      className={`theme-option ${t.id === theme ? 'active' : ''}`}
+                      onClick={() => {
+                        onSetTheme(t.id);
+                        setShowThemeMenu(false);
+                      }}
+                    >
+                      <span className="theme-icon">{t.icon}</span>
+                      <span className="theme-label">{t.name}</span>
+                      {t.id === theme && <span className="checkmark">✓</span>}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
 
             {isAuthenticated ? (
               <>
