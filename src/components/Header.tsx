@@ -53,30 +53,7 @@ export function Header({ isAuthenticated, onLogin, onLogout, theme, onSetTheme, 
     <>
       <header className="app-header">
         <div className="header-content">
-          {editingHeaderTitle ? (
-            <input
-              type="text"
-              className="header-title-edit"
-              value={tempHeaderTitle}
-              onChange={(e) => onHeaderTitleChange(e.target.value)}
-              onBlur={onHeaderTitleSave}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') onHeaderTitleSave();
-                if (e.key === 'Escape') onHeaderTitleCancel();
-              }}
-              autoFocus
-            />
-          ) : (
-            <h1
-              className={isAuthenticated ? 'editable-header-title' : ''}
-              onClick={isAuthenticated ? onHeaderTitleClick : undefined}
-              title={isAuthenticated ? 'Click to edit header title' : ''}
-            >
-              {headerTitle || 'Social Enterprise Business Model Canvas'}
-            </h1>
-          )}
-
-          <div className="mode-indicator">
+          <div className="header-left">
             <button
               className="btn btn-icon pdf-export"
               onClick={onExportPDF}
@@ -114,7 +91,34 @@ export function Header({ isAuthenticated, onLogin, onLogout, theme, onSetTheme, 
                 </div>
               )}
             </div>
+          </div>
 
+          <div className="header-center">
+            {editingHeaderTitle ? (
+              <input
+                type="text"
+                className="header-title-edit"
+                value={tempHeaderTitle}
+                onChange={(e) => onHeaderTitleChange(e.target.value)}
+                onBlur={onHeaderTitleSave}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') onHeaderTitleSave();
+                  if (e.key === 'Escape') onHeaderTitleCancel();
+                }}
+                autoFocus
+              />
+            ) : (
+              <h1
+                className={isAuthenticated ? 'editable-header-title' : ''}
+                onClick={isAuthenticated ? onHeaderTitleClick : undefined}
+                title={isAuthenticated ? 'Click to edit header title' : ''}
+              >
+                {headerTitle || 'Social Enterprise Business Model Canvas'}
+              </h1>
+            )}
+          </div>
+
+          <div className="header-right">
             {isAuthenticated ? (
               <>
                 <div className="edit-mode-badge">

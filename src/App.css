@@ -189,15 +189,36 @@ body {
 .header-content {
   max-width: 1600px;
   margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
+  gap: 1rem;
 }
 
-.header-content h1 {
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-self: start;
+}
+
+.header-center {
+  justify-self: center;
+}
+
+.header-center h1 {
   font-size: 1.5rem;
   color: var(--primary-black);
   font-weight: 700;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-self: end;
 }
 
 .editable-header-title {
@@ -235,6 +256,8 @@ body {
   display: flex;
   align-items: center;
   gap: 1rem;
+  position: absolute;
+  right: 0;
 }
 
 .edit-mode-badge,
