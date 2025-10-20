@@ -110,6 +110,45 @@
   --border-color: #e0e0e0;
 }
 
+/* Minimal theme overrides for proper contrast */
+[data-theme='minimal'] .add-item-btn {
+  background: #000000;
+  color: #ffffff;
+  border-color: #000000;
+}
+
+[data-theme='minimal'] .btn,
+[data-theme='minimal'] .btn-small {
+  background: #000000;
+  color: #ffffff;
+}
+
+[data-theme='minimal'] .btn:hover,
+[data-theme='minimal'] .btn-small:hover {
+  background: #333333;
+}
+
+/* Keep icon buttons with normal styling in minimal theme */
+[data-theme='minimal'] .btn-icon {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+[data-theme='minimal'] .btn-icon:hover {
+  background: var(--bg-secondary);
+}
+
+/* Sidebar toggle needs white text on black background */
+[data-theme='minimal'] .sidebar-toggle {
+  background: #000000;
+  color: #ffffff;
+}
+
+[data-theme='minimal'] .sidebar-toggle:hover {
+  background: #333333;
+}
+
 /* Ocean Theme - Cool blue & teal */
 [data-theme='ocean'] {
   --primary-yellow: #00BCD4;
