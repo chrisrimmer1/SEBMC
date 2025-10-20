@@ -200,6 +200,18 @@ body {
   font-weight: 700;
 }
 
+.editable-header-title {
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  margin: -0.25rem -0.5rem;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.editable-header-title:hover {
+  background-color: var(--gray-100);
+}
+
 .mode-indicator {
   display: flex;
   align-items: center;

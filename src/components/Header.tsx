@@ -10,9 +10,11 @@ interface HeaderProps {
   theme: ThemeName;
   onSetTheme: (theme: ThemeName) => void;
   onExportPDF: () => void;
+  canvasTitle?: string;
+  onTitleClick?: () => void;
 }
 
-export function Header({ isAuthenticated, onLogin, onLogout, theme, onSetTheme, onExportPDF }: HeaderProps) {
+export function Header({ isAuthenticated, onLogin, onLogout, theme, onSetTheme, onExportPDF, canvasTitle, onTitleClick }: HeaderProps) {
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [showThemeMenu, setShowThemeMenu] = useState(false);
   const [password, setPassword] = useState('');
@@ -46,7 +48,13 @@ export function Header({ isAuthenticated, onLogin, onLogout, theme, onSetTheme, 
     <>
       <header className="app-header">
         <div className="header-content">
-          <h1>Social Enterprise Business Model Canvas</h1>
+          <h1
+            className={isAuthenticated ? 'editable-header-title' : ''}
+            onClick={isAuthenticated ? onTitleClick : undefined}
+            title={isAuthenticated ? 'Click to edit title' : ''}
+          >
+            {canvasTitle || 'Social Enterprise Business Model Canvas'}
+          </h1>
 
           <div className="mode-indicator">
             <button

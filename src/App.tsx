@@ -93,6 +93,8 @@ function App() {
         theme={theme}
         onSetTheme={setTheme}
         onExportPDF={handleExportPDF}
+        canvasTitle={canvasData.canvasTitle}
+        onTitleClick={handleCanvasTitleClick}
       />
 
       <Sidebar
