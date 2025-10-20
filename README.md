@@ -15,7 +15,7 @@ A modern, interactive web application for planning and visualizing social enterp
 📥 **PDF Export** - Download your canvas as a professionally formatted A4 PDF
 📱 **Fully Responsive** - Optimized for desktop, tablet, and mobile
 ⚡ **Lightning Fast** - Built with Vite for instant hot reload during development
-🎨 **Theme Toggle** - Switch between light and dark modes
+🎨 **6 Beautiful Themes** - Chris (yellow), Olly (pink), Midnight (dark), Minimal (monochrome), Ocean (teal), Sunset (coral)
 ❓ **Guided Questions** - Built-in seed questions help you think through each section
 🌐 **Cloud-Based** - Access your canvas from anywhere with database sync
 
@@ -58,7 +58,7 @@ npm run preview  # Preview production build locally
 
 Open the application - you'll see the Social Enterprise Business Model Canvas in view-only mode. You can:
 - Browse all 9 sections and their content
-- Switch between light/dark themes using the moon/sun icon
+- Choose from 6 beautiful themes using the palette dropdown (🎨)
 - Export the canvas to PDF using the download icon
 
 ### Edit Mode
@@ -97,6 +97,31 @@ Manual line breaks preserved
 - **Enter**: Save when editing
 - **Esc**: Close modal or cancel editing
 - **Ctrl/Cmd + Enter**: Save multi-line text in subtitle editor
+
+## Themes
+
+The app includes 6 beautiful color themes to customize your experience:
+
+### Available Themes
+
+- **☀️ Chris** (Default) - Classic yellow and black design, professional and bold
+- **💗 Olly** - Vibrant hot pink theme with playful energy
+- **🌙 Midnight** - Dark mode with yellow accents for reduced eye strain
+- **⬛ Minimal** - Pure black and white monochrome for distraction-free focus
+- **🌊 Ocean** - Cool cyan and teal colors, calm and refreshing
+- **🌅 Sunset** - Warm coral and orange tones, inviting and friendly
+
+### Changing Themes
+
+1. Click the **🎨 Theme** button in the header (shows current theme)
+2. Select your preferred theme from the dropdown menu
+3. Theme choice is saved automatically and persists across sessions
+
+Each theme includes carefully chosen colors for:
+- Section borders and accents
+- Text and backgrounds with proper contrast
+- Shadows and UI elements
+- Consistent experience across all features
 
 ## Canvas Sections
 
@@ -451,14 +476,15 @@ SEBMC/
 │   │   └── SeedQuestionsModal.tsx
 │   ├── hooks/               # Custom React hooks
 │   │   ├── useAuth.ts       # Authentication
-│   │   ├── useTheme.ts      # Light/dark mode
+│   │   ├── useTheme.ts      # Theme management (6 themes)
 │   │   └── useCanvasDataDB.ts  # Database operations
 │   ├── types/               # TypeScript definitions
 │   ├── utils/               # Utility functions
 │   │   ├── initialData.ts   # Default canvas
 │   │   ├── exportPDF.ts     # PDF generation
 │   │   ├── markdown.tsx     # Text formatting
-│   │   └── seedQuestions.ts # Help content
+│   │   ├── seedQuestions.ts # Help content
+│   │   └── themes.ts        # Theme definitions
 │   ├── App.tsx              # Main application
 │   └── App.css              # All styles
 ├── netlify/
@@ -551,7 +577,7 @@ For issues, questions, or suggestions:
 - ✅ Password-protected edit mode
 - ✅ Database persistence (Neon + Netlify)
 - ✅ PDF export with smart page breaks
-- ✅ Light/dark theme toggle
+- ✅ 6 custom themes (Chris, Olly, Midnight, Minimal, Ocean, Sunset)
 - ✅ Seed questions for guided planning
 - ✅ Drag & drop reordering
 - ✅ Editable section subtitles
@@ -565,7 +591,7 @@ Future enhancements:
 - [ ] Multiple canvas support (save different projects)
 - [ ] User authentication (multiple users)
 - [ ] Real-time collaboration
-- [ ] Custom themes and colors
+- [ ] User-customizable color themes
 - [ ] Undo/redo functionality
 - [ ] Version history
 - [ ] Comments and notes
