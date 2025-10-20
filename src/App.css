@@ -1103,6 +1103,21 @@ kbd {
     padding: 1rem;
   }
 
+  /* Responsive header for tablets */
+  .header-content {
+    padding: 0.75rem 1rem;
+  }
+
+  .header-center h1 {
+    font-size: 1.25rem;
+    white-space: normal;
+    word-break: break-word;
+  }
+
+  .header-title-edit {
+    font-size: 1.25rem;
+  }
+
   .canvas-header h2 {
     font-size: 1.5rem;
   }
@@ -1171,10 +1186,29 @@ kbd {
 }
 
 @media (max-width: 480px) {
+  /* Stack header vertically on very small screens */
   .header-content {
-    flex-direction: column;
-    gap: 1rem;
-    text-align: center;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .header-left,
+  .header-center,
+  .header-right {
+    justify-self: center;
+  }
+
+  .header-center h1 {
+    font-size: 1.125rem;
+    white-space: normal;
+    word-break: break-word;
+  }
+
+  .header-title-edit {
+    font-size: 1.125rem;
+    max-width: 100%;
   }
 
   .mode-indicator {
