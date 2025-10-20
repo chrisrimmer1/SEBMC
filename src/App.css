@@ -1191,15 +1191,10 @@ kbd {
     display: none !important;
   }
 
-  /* Show only theme toggle on mobile, hide mode badges and lock/unlock buttons */
-  .mode-indicator {
-    display: flex !important;
-    justify-content: center;
-  }
-
+  /* Hide mode badges and lock/unlock buttons on mobile */
   .edit-mode-badge,
   .view-mode-badge,
-  .mode-indicator .btn-small {
+  .header-right .btn-small {
     display: none !important;
   }
 
