@@ -146,16 +146,23 @@ When running locally (`npm run dev`):
 - Neon PostgreSQL database (free tier works)
 - GitHub account
 
-**Steps:**
+**Option A: Automatic Setup (Recommended - Easiest)**
 
 1. **Create Neon Database**
-   - Go to [neon.tech](https://neon.tech) and create a free account
-   - Create a new project and database
-   - Copy the connection string (starts with `postgresql://`)
+   - Go to [console.neon.tech](https://console.neon.tech) and sign up (free)
+   - Click **"Create a project"**
+   - Name your project (e.g., "SEBMC")
+   - Select region closest to you
+   - Click **"Create project"**
+   - Your database is ready!
 
-2. **Set Up Database Schema**
-   - Connect to your Neon database console
-   - Run the SQL from `database/schema.sql`:
+2. **Set Up Database Table**
+   - In Neon console, click **"SQL Editor"** in the left sidebar
+   - Click **"New Query"**
+   - Copy and paste the entire contents of `database/schema.sql` (or use the SQL below)
+   - Click **"Run"** or press Ctrl+Enter
+   - You should see: "Success" with "CREATE TABLE" messages
+
    ```sql
    CREATE TABLE IF NOT EXISTS canvas_data (
      id SERIAL PRIMARY KEY,
@@ -163,28 +170,87 @@ When running locally (`npm run dev`):
      canvas_name VARCHAR(255) NOT NULL DEFAULT 'My Canvas',
      data JSONB NOT NULL,
      last_modified TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
      UNIQUE(user_id, canvas_name)
    );
+
+   CREATE INDEX IF NOT EXISTS idx_user_id ON canvas_data(user_id);
+   CREATE INDEX IF NOT EXISTS idx_last_modified ON canvas_data(last_modified DESC);
    ```
 
-3. **Connect to Netlify**
-   - Push your code to GitHub
+3. **Verify Table Created**
+   - In SQL Editor, run: `SELECT * FROM canvas_data;`
+   - Should return empty results (no rows yet) - this confirms the table exists
+
+4. **Push Code to GitHub**
+   ```bash
+   git add .
+   git commit -m "Initial commit"
+   git push origin main
+   ```
+
+5. **Deploy to Netlify with Neon Integration**
    - Go to [netlify.com](https://netlify.com) and sign in
-   - Click "Add new site" → "Import an existing project"
-   - Connect to your GitHub repository
+   - Click **"Add new site"** → **"Import an existing project"**
+   - Choose **GitHub** and select your SEBMC repository
    - Configure build settings:
      - **Build command**: `npm run build`
      - **Publish directory**: `dist`
      - **Functions directory**: `netlify/functions`
+   - Click **"Deploy site"** (don't worry, we'll connect database next)
 
-4. **Configure Environment Variables**
-   - In Netlify dashboard, go to Site settings → Environment variables
-   - Add `NETLIFY_DATABASE_URL` with your Neon connection string
-   - OR install the Neon Netlify integration (recommended - auto-configures)
+6. **Install Neon Integration** (Automatic Database Connection)
+   - In your Netlify site dashboard, click **"Integrations"** in the top menu
+   - Search for **"Neon"**
+   - Click **"Add integration"** on the Neon card
+   - Click **"Connect Neon"**
+   - Authorize Netlify to access your Neon account
+   - Select your SEBMC project from the dropdown
+   - Select your database
+   - Click **"Connect"**
+   - Netlify automatically sets `NETLIFY_DATABASE_URL` environment variable!
 
-5. **Deploy**
-   - Netlify will automatically deploy when you push to GitHub
-   - Future pushes trigger automatic redeployment
+7. **Redeploy**
+   - Go to **"Deploys"** tab
+   - Click **"Trigger deploy"** → **"Deploy site"**
+   - Wait for build to complete (~1-2 minutes)
+   - Your app is live with database! ✅
+
+**Option B: Manual Setup**
+
+If you prefer manual configuration or the integration doesn't work:
+
+1. **Get Neon Connection String**
+   - In Neon console, click **"Dashboard"**
+   - Find your database in the project
+   - Click **"Connection Details"**
+   - Copy the connection string (looks like: `postgresql://user:password@ep-xyz.region.neon.tech/dbname?sslmode=require`)
+
+2. **Add to Netlify Manually**
+   - In Netlify dashboard, go to **Site settings** → **Environment variables**
+   - Click **"Add a variable"**
+   - **Key**: `NETLIFY_DATABASE_URL`
+   - **Value**: Paste your Neon connection string
+   - **Scopes**: Check "All" or "Production"
+   - Click **"Create variable"**
+
+3. **Redeploy**
+   - Go to **"Deploys"** tab → **"Trigger deploy"** → **"Deploy site"**
+
+**Verifying Database Connection**
+
+After deployment:
+1. Open your deployed site URL
+2. Press **F12** → **Network tab**
+3. Refresh the page
+4. Look for a request to `get-canvas` or `/.netlify/functions/get-canvas`
+   - ✅ **Status 200**: Database connected and working!
+   - ⚠️ **Status 404**: Functions not deployed (check build logs)
+   - ❌ **Status 500**: Database connection issue (check environment variables)
+
+5. Unlock edit mode and add an item
+6. Look for `save-canvas` request with Status 200
+7. Refresh the page - data should persist! ✅
 
 **Manual Deployment:**
 
@@ -235,6 +301,122 @@ Required for database functionality:
 - `DATABASE_URL` - Fallback connection string
 
 These are automatically configured when using the Neon Netlify integration.
+
+## Troubleshooting Database Issues
+
+### "Failed to load canvas data" or "Failed to save changes"
+
+**Check 1: Verify Database Table Exists**
+- Go to Neon console → SQL Editor
+- Run: `SELECT * FROM canvas_data;`
+- If error "relation does not exist": Run the schema SQL again (see deployment steps)
+- If returns empty results: ✅ Table exists, continue to next check
+
+**Check 2: Verify Environment Variable is Set**
+- Netlify dashboard → Site settings → Environment variables
+- Look for `NETLIFY_DATABASE_URL` or `DATABASE_URL`
+- If missing: Add manually or reinstall Neon integration
+- If present: Copy value and test connection in Neon
+
+**Check 3: Check Netlify Function Logs**
+- Netlify dashboard → Functions tab
+- Click on `get-canvas` or `save-canvas`
+- Click "Function logs"
+- Look for errors like:
+  - "Connection refused": Database not accessible (check Neon is running)
+  - "relation does not exist": Table not created (run schema SQL)
+  - "password authentication failed": Wrong connection string
+
+**Check 4: Verify Functions Deployed**
+- Netlify dashboard → Deploys → Latest deploy
+- Scroll to build logs
+- Search for "Packaging Functions"
+- Should see: `get-canvas.ts` and `save-canvas.ts` listed
+- If not listed: Check `netlify.toml` exists and redeploy
+
+### Functions Return 404
+
+**Cause**: Functions weren't deployed with the site
+
+**Fix**:
+1. Verify `netlify.toml` exists in project root
+2. Check it has: `functions = "netlify/functions"`
+3. Trigger a new deploy: Deploys → Trigger deploy → Deploy site
+4. Check build logs for "Functions" section
+
+### Data Doesn't Persist Across Devices
+
+**Cause**: Still using localStorage instead of database
+
+**Fix**:
+1. Check browser Network tab (F12) when loading the app
+2. Look for requests to `/.netlify/functions/get-canvas`
+3. If NO requests appear: App is using localStorage
+4. Verify `src/App.tsx` imports `useCanvasDataDB` (not `useCanvasData`)
+5. Rebuild and redeploy
+
+### Neon Connection String Issues
+
+**Correct format**:
+```
+postgresql://user:password@ep-xxxxx-xxxxx.region.aws.neon.tech/dbname?sslmode=require
+```
+
+**Common mistakes**:
+- Missing `?sslmode=require` at the end (Neon requires SSL)
+- Using wrong database name
+- Expired password (Neon resets passwords periodically)
+- Wrong region endpoint
+
+**Get fresh connection string**:
+- Neon console → Dashboard → Your database → Connection Details
+- Click "Copy" icon to avoid typos
+
+### Database Works Locally but Not on Netlify
+
+**Local (using `netlify dev`)**:
+- Uses `.env` file with `DATABASE_URL`
+
+**Production (Netlify)**:
+- Uses environment variables from Netlify dashboard
+- Must set `NETLIFY_DATABASE_URL` in Netlify (not in `.env`)
+
+**Fix**: Add environment variable in Netlify dashboard, then redeploy
+
+### How to View Data in Neon
+
+To inspect your saved canvas data:
+
+```sql
+-- See all canvases
+SELECT user_id, canvas_name, last_modified FROM canvas_data;
+
+-- See full data for default canvas
+SELECT data FROM canvas_data WHERE user_id = 'default';
+
+-- Pretty print the JSON
+SELECT jsonb_pretty(data) FROM canvas_data WHERE user_id = 'default';
+
+-- Count items in each section
+SELECT
+  key as section,
+  jsonb_array_length(value->'items') as item_count
+FROM canvas_data, jsonb_each(data->'sections')
+WHERE user_id = 'default';
+```
+
+### Reset Database (Start Fresh)
+
+If you want to clear all data and start over:
+
+```sql
+-- Delete all data but keep table structure
+DELETE FROM canvas_data;
+
+-- Or drop and recreate table
+DROP TABLE canvas_data;
+-- Then run schema.sql again
+```
 
 ## Changing the Password
 
