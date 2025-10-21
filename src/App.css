@@ -455,8 +455,9 @@ body {
 }
 
 .canvas-subtitle {
-  font-size: 1.125rem;
+  font-size: 1.05rem;
   color: var(--gray-600);
+  line-height: 1.5;
 }
 
 .editable-canvas-heading {
@@ -488,11 +489,11 @@ body {
 }
 
 .canvas-subtitle-edit {
-  font-size: 1.125rem;
+  font-size: 1.05rem;
   color: var(--gray-600);
   resize: vertical;
   min-height: 80px;
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
 .canvas-title-edit:focus,
@@ -1235,6 +1236,14 @@ kbd {
 
   .canvas-header h2 {
     font-size: 1.5rem;
+  }
+
+  .canvas-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .canvas-subtitle-edit {
+    font-size: 0.95rem;
   }
 
   /* Stack all panels vertically */
