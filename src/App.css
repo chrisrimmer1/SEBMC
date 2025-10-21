@@ -149,6 +149,17 @@
   background: #333333;
 }
 
+/* Fix theme selector active state in minimal theme */
+[data-theme='minimal'] .theme-option.active {
+  background: #000000;
+  color: #ffffff;
+}
+
+[data-theme='minimal'] .theme-option:hover {
+  background: #f5f5f5;
+  color: #000000;
+}
+
 /* Ocean Theme - Cool blue & teal */
 [data-theme='ocean'] {
   --primary-yellow: #00BCD4;
