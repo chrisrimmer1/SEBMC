@@ -137,6 +137,37 @@ export function Header({ isAuthenticated, onLogin, onLogout, theme, onSetTheme, 
                 </button>
               </>
             )}
+
+            {/* Theme selector for mobile - only visible on small screens */}
+            <div className="theme-selector theme-selector-mobile">
+              <button
+                className="btn btn-icon theme-toggle"
+                onClick={() => setShowThemeMenu(!showThemeMenu)}
+                title="Change theme"
+              >
+                <span className="theme-icon-mobile">{currentTheme.icon}</span>
+                <span className="theme-name">{currentTheme.name}</span>
+              </button>
+
+              {showThemeMenu && (
+                <div className="theme-dropdown">
+                  {themes.map((t) => (
+                    <button
+                      key={t.id}
+                      className={`theme-option ${t.id === theme ? 'active' : ''}`}
+                      onClick={() => {
+                        onSetTheme(t.id);
+                        setShowThemeMenu(false);
+                      }}
+                    >
+                      <span className="theme-icon">{t.icon}</span>
+                      <span className="theme-label">{t.name}</span>
+                      {t.id === theme && <span className="checkmark">✓</span>}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </header>
