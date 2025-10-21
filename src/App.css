@@ -1231,29 +1231,67 @@ kbd {
 }
 
 @media (max-width: 480px) {
-  /* Stack header vertically on very small screens */
+  /* Mobile layout: [PDF] [Title] [Theme] */
   .header-content {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto auto;
-    gap: 0.75rem;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: auto;
+    gap: 0.5rem;
     padding: 0.75rem 1rem;
+    align-items: center;
   }
 
-  .header-left,
-  .header-center,
-  .header-right {
+  .header-left {
+    justify-self: start;
+    display: flex;
+    gap: 0;
+  }
+
+  /* Hide theme selector from header-left on mobile */
+  .header-left .theme-selector {
+    display: none;
+  }
+
+  .header-center {
     justify-self: center;
   }
 
   .header-center h1 {
-    font-size: 1.125rem;
+    font-size: 1rem;
     white-space: normal;
     word-break: break-word;
+    text-align: center;
   }
 
   .header-title-edit {
-    font-size: 1.125rem;
+    font-size: 1rem;
     max-width: 100%;
+  }
+
+  .header-right {
+    justify-self: end;
+    display: flex;
+    gap: 0;
+  }
+
+  /* Show only theme selector in header-right on mobile */
+  .header-right > *:not(.theme-selector) {
+    display: none !important;
+  }
+
+  /* Ensure theme button is smaller on mobile */
+  .header-right .theme-toggle {
+    padding: 0.5rem;
+    min-width: 40px;
+  }
+
+  .header-right .theme-name {
+    display: none;
+  }
+
+  /* Keep PDF export button visible in header-left */
+  .header-left .btn-icon {
+    width: 40px;
+    height: 40px;
   }
 
   .mode-indicator {
