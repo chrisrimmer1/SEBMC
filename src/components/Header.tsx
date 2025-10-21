@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Lock, Unlock, Eye, Edit3, FileDown, Palette } from 'lucide-react';
+import { Lock, Unlock, Eye, Edit3, FileDown } from 'lucide-react';
 import { themes, getThemeConfig, type ThemeName } from '../utils/themes';
 
 interface HeaderProps {
@@ -68,7 +68,6 @@ export function Header({ isAuthenticated, onLogin, onLogout, theme, onSetTheme, 
                 onClick={() => setShowThemeMenu(!showThemeMenu)}
                 title="Change theme"
               >
-                <Palette size={16} />
                 <span className="theme-name">{currentTheme.icon} {currentTheme.name}</span>
               </button>
 
