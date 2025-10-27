@@ -252,6 +252,18 @@ body {
   justify-self: start;
 }
 
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.skillsprint-logo {
+  height: 40px;
+  width: auto;
+  max-width: 120px;
+  object-fit: contain;
+}
+
 .header-center {
   justify-self: center;
 }
@@ -1174,6 +1186,11 @@ kbd {
     flex: 0 0 auto;
   }
 
+  .skillsprint-logo {
+    height: 30px;
+    max-width: 80px;
+  }
+
   /* Hide desktop theme selector on mobile */
   .header-left .theme-selector:not(.theme-selector-mobile) {
     display: none !important;
@@ -1312,6 +1329,11 @@ kbd {
 
   .header-title-edit {
     font-size: 0.875rem;
+  }
+
+  .skillsprint-logo {
+    height: 25px;
+    max-width: 60px;
   }
 
   .mode-indicator {
