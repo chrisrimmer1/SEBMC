@@ -1,5 +1,4 @@
 import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
 import type { CanvasData, ContentItem, SectionId } from '../types';
 
 export async function exportToPDF(canvasData: CanvasData): Promise<void> {
@@ -12,72 +11,51 @@ export async function exportToPDF(canvasData: CanvasData): Promise<void> {
   let currentY = margin;
 
   // Helper function to add new page if needed
-  const checkPageBreak = (requiredHeight: number) => {
+  const checkPageBreak = (requiredHeight: number): void => {
     if (currentY + requiredHeight > pageHeight - margin) {
       pdf.addPage();
       currentY = margin;
-      return true;
-    }
-    return false;
-  };
-
-  // Helper function to render HTML to canvas and add to PDF
-  const addHtmlElement = async (html: string): Promise<number> => {
-    const container = document.createElement('div');
-    container.style.position = 'absolute';
-    container.style.left = '-9999px';
-    container.style.top = '0';
-    container.style.width = '794px'; // A4 width in pixels at 96 DPI
-    container.style.backgroundColor = '#ffffff';
-    container.style.padding = '20px';
-    container.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-    container.innerHTML = html;
-
-    document.body.appendChild(container);
-
-    try {
-      const canvas = await html2canvas(container, {
-        scale: 2,
-        useCORS: true,
-        logging: false,
-        backgroundColor: '#ffffff'
-      });
-
-      const imgWidth = contentWidth;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-      // Check if we need a new page
-      checkPageBreak(imgHeight);
-
-      pdf.addImage(
-        canvas.toDataURL('image/png'),
-        'PNG',
-        margin,
-        currentY,
-        imgWidth,
-        imgHeight
-      );
-
-      currentY += imgHeight;
-      return imgHeight;
-    } finally {
-      document.body.removeChild(container);
     }
   };
 
-  // Title and subtitle
+  // Add title
+  checkPageBreak(15);
   const title = canvasData.headerTitle || 'Social Enterprise Business Model Canvas';
+  pdf.setFontSize(18);
+  pdf.setFont('helvetica', 'bold');
+  pdf.setTextColor(0, 0, 0);
+  const titleLines = pdf.splitTextToSize(title, contentWidth);
+  titleLines.forEach((line: string, index: number) => {
+    checkPageBreak(7);
+    pdf.text(line, margin + contentWidth / 2, currentY, { align: 'center' });
+    if (index < titleLines.length - 1) {
+      currentY += 7;
+    }
+  });
+  currentY += 10;
+
+  // Add subtitle (canvas subtitle) - strip markdown
   const subtitle = canvasData.canvasSubtitle || 'Plan your social impact venture';
-
-  const headerHtml = `
-    <div style="text-align: center; margin-bottom: 20px;">
-      <h1 style="font-size: 28px; margin-bottom: 10px; color: #000; font-weight: 700;">${title}</h1>
-      <p style="font-size: 14px; color: #666; line-height: 1.6;">${subtitle}</p>
-    </div>
-  `;
-
-  await addHtmlElement(headerHtml);
-  currentY += 5; // Add some spacing
+  if (subtitle) {
+    const cleanSubtitle = subtitle
+      .replace(/\*\*(.+?)\*\*/g, '$1')
+      .replace(/__(.+?)__/g, '$1')
+      .replace(/\*(.+?)\*/g, '$1')
+      .replace(/_(.+?)_/g, '$1');
+    
+    pdf.setFontSize(11);
+    pdf.setFont('helvetica', 'normal');
+    pdf.setTextColor(102, 102, 102);
+    const subtitleLines = pdf.splitTextToSize(cleanSubtitle, contentWidth);
+    subtitleLines.forEach((line: string, index: number) => {
+      checkPageBreak(5);
+      pdf.text(line, margin + contentWidth / 2, currentY, { align: 'center' });
+      if (index < subtitleLines.length - 1) {
+        currentY += 5;
+      }
+    });
+    currentY += 12;
+  }
 
   // Section order for stacked layout
   const sectionOrder: SectionId[] = [
@@ -97,48 +75,173 @@ export async function exportToPDF(canvasData: CanvasData): Promise<void> {
     const section = canvasData.sections[sectionId];
     if (!section) continue;
 
-    let sectionHtml = `
-      <div style="border: 2px solid #000; border-radius: 8px; padding: 15px; background: #fff;">
-        <div style="margin-bottom: 10px; padding-bottom: 8px; border-bottom: 2px solid #000;">
-          <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 4px; color: #000;">${section.title}</h3>
-          <p style="font-size: 12px; color: #666; font-style: italic; line-height: 1.4;">${section.subtitle}</p>
-        </div>
-        <div style="min-height: 40px;">
-    `;
+    // Check if we need a new page for the section
+    checkPageBreak(40);
+    
+    const sectionStartY = currentY;
+    const sectionPadding = 5;
+    const sectionInnerX = margin + sectionPadding + 3;
+    const sectionInnerWidth = contentWidth - (2 * sectionPadding) - 10; // More padding
+    
+    // Move down to leave space for border
+    currentY += 7;
+    
+    // Section title
+    pdf.setFontSize(13);
+    pdf.setFont('helvetica', 'bold');
+    pdf.setTextColor(0, 0, 0);
+    const sectionTitleLines = pdf.splitTextToSize(section.title, sectionInnerWidth);
+    sectionTitleLines.forEach((line: string, index: number) => {
+      checkPageBreak(6);
+      pdf.text(line, sectionInnerX, currentY);
+      if (index < sectionTitleLines.length - 1) {
+        currentY += 6;
+      }
+    });
+    currentY += 6;
 
-    if (section.items && section.items.length > 0) {
-      section.items.forEach((item: ContentItem) => {
-        const descriptionLines = item.description.split('\n').map((line: string) => {
-          const trimmed = line.trim();
-          if (trimmed.startsWith('-') || trimmed.startsWith('•')) {
-            return `<div style="padding-left: 18px; position: relative; margin: 2px 0;"><span style="position: absolute; left: 0; font-weight: bold;">•</span> ${trimmed.substring(1).trim()}</div>`;
-          }
-          return `<div style="margin: 2px 0;">${trimmed || '&nbsp;'}</div>`;
-        }).join('');
-
-        sectionHtml += `
-          <div style="margin-bottom: 10px; padding: 12px; background: #f5f5f5; border-radius: 6px; border-left: 3px solid #000;">
-            <div style="font-weight: 700; font-size: 14px; margin-bottom: 6px; color: #000;">${item.title}</div>
-            <div style="font-size: 12px; color: #333; line-height: 1.6;">
-              ${descriptionLines}
-            </div>
-          </div>
-        `;
+    // Section subtitle
+    if (section.subtitle) {
+      const cleanSubtitle = section.subtitle
+        .replace(/\*\*(.+?)\*\*/g, '$1')
+        .replace(/__(.+?)__/g, '$1')
+        .replace(/\*(.+?)\*/g, '$1')
+        .replace(/_(.+?)_/g, '$1');
+      
+      pdf.setFontSize(9);
+      pdf.setFont('helvetica', 'italic');
+      pdf.setTextColor(102, 102, 102);
+      const sectionSubtitleLines = pdf.splitTextToSize(cleanSubtitle, sectionInnerWidth);
+      sectionSubtitleLines.forEach((line: string, index: number) => {
+        checkPageBreak(4);
+        pdf.text(line, sectionInnerX, currentY);
+        if (index < sectionSubtitleLines.length - 1) {
+          currentY += 4;
+        }
       });
-    } else {
-      sectionHtml += '<div style="color: #999; font-size: 12px; font-style: italic; padding: 10px 0;">No items added yet</div>';
+      currentY += 5;
     }
 
-    sectionHtml += `
-        </div>
-      </div>
-    `;
+    // Draw line under header
+    checkPageBreak(3);
+    pdf.setDrawColor(0, 0, 0);
+    pdf.setLineWidth(0.3);
+    pdf.line(sectionInnerX, currentY, margin + contentWidth - sectionPadding - 3, currentY);
+    currentY += 5;
 
-    await addHtmlElement(sectionHtml);
-    currentY += 8; // Add spacing between sections
+    // Add items
+    if (section.items && section.items.length > 0) {
+      section.items.forEach((item: ContentItem, itemIndex: number) => {
+        checkPageBreak(20);
+        
+        // Item title (bold)
+        let itemTitle = item.title;
+        const isBoldTitle = itemTitle.startsWith('**') && itemTitle.endsWith('**');
+        if (isBoldTitle) {
+          itemTitle = itemTitle.slice(2, -2);
+        }
+        
+        pdf.setFontSize(10);
+        pdf.setFont('helvetica', 'bold');
+        pdf.setTextColor(0, 0, 0);
+        const itemTitleLines = pdf.splitTextToSize(itemTitle, sectionInnerWidth - 5);
+        itemTitleLines.forEach((line: string, index: number) => {
+          checkPageBreak(5);
+          pdf.text(line, sectionInnerX + 2, currentY);
+          if (index < itemTitleLines.length - 1) {
+            currentY += 5;
+          }
+        });
+        currentY += 4;
+
+        // Item description
+        if (item.description) {
+          const descLines = item.description.split('\n');
+          descLines.forEach((descLine) => {
+            const trimmed = descLine.trim();
+            if (!trimmed) {
+              currentY += 2;
+              return;
+            }
+            
+            // Check for bullet points
+            if (trimmed.startsWith('-') || trimmed.startsWith('•')) {
+              const bulletText = trimmed.replace(/^[-•]\s*/, '');
+              checkPageBreak(5);
+              
+              pdf.setFontSize(9);
+              pdf.setFont('helvetica', 'bold');
+              pdf.setTextColor(51, 51, 51);
+              pdf.text('•', sectionInnerX + 2, currentY);
+              
+              // Render bullet text
+              pdf.setFont('helvetica', 'normal');
+              const bulletLines = pdf.splitTextToSize(bulletText, sectionInnerWidth - 15);
+              bulletLines.forEach((line: string, index: number) => {
+                checkPageBreak(4);
+                pdf.text(line, sectionInnerX + 6, currentY);
+                if (index < bulletLines.length - 1) {
+                  currentY += 4;
+                }
+              });
+              currentY += 4;
+            } else {
+              // Regular text - strip markdown
+              const cleanText = trimmed
+                .replace(/\*\*(.+?)\*\*/g, '$1')
+                .replace(/__(.+?)__/g, '$1')
+                .replace(/\*(.+?)\*/g, '$1')
+                .replace(/_(.+?)_/g, '$1');
+              
+              pdf.setFontSize(9);
+              pdf.setFont('helvetica', 'normal');
+              pdf.setTextColor(51, 51, 51);
+              const textLines = pdf.splitTextToSize(cleanText, sectionInnerWidth - 8);
+              textLines.forEach((line: string, index: number) => {
+                checkPageBreak(4);
+                pdf.text(line, sectionInnerX + 2, currentY);
+                if (index < textLines.length - 1) {
+                  currentY += 4;
+                }
+              });
+              currentY += 4;
+            }
+          });
+        }
+
+        // Spacing between items (but not after last item)
+        if (itemIndex < section.items.length - 1) {
+          currentY += 3;
+        }
+      });
+    } else {
+      pdf.setFontSize(9);
+      pdf.setFont('helvetica', 'italic');
+      pdf.setTextColor(153, 153, 153);
+      checkPageBreak(5);
+      pdf.text('No items added yet', sectionInnerX + 2, currentY);
+      currentY += 5;
+    }
+
+    const sectionEndY = currentY + 4;
+
+    // Draw border around section
+    pdf.setDrawColor(0, 0, 0);
+    pdf.setLineWidth(0.5);
+    pdf.rect(margin + sectionPadding, sectionStartY, contentWidth - (2 * sectionPadding), sectionEndY - sectionStartY);
+
+    currentY = sectionEndY + 8; // Spacing between sections
   }
 
   // Add footer on last page
+  checkPageBreak(25);
+  currentY += 5;
+  
+  pdf.setDrawColor(0, 0, 0);
+  pdf.setLineWidth(0.3);
+  pdf.line(margin, currentY, margin + contentWidth, currentY);
+  currentY += 5;
+
   const currentDate = new Date().toLocaleString('en-GB', {
     year: 'numeric',
     month: '2-digit',
@@ -147,20 +250,22 @@ export async function exportToPDF(canvasData: CanvasData): Promise<void> {
     minute: '2-digit'
   });
 
-  checkPageBreak(20);
+  pdf.setFontSize(8);
+  pdf.setFont('helvetica', 'normal');
+  pdf.setTextColor(102, 102, 102);
+  
+  const footerTexts = [
+    'Based on the Social Enterprise Business Model Canvas by HotCubator,',
+    'adapted from the original Business Model Canvas by Alexander Osterwalder.',
+    'hotcubator.com.au/social-entrepreneurship/social-enterprise-business-model-canvas',
+    `Exported: ${currentDate}`
+  ];
 
-  const footerHtml = `
-    <div style="padding-top: 15px; border-top: 2px solid #000; text-align: center;">
-      <p style="font-size: 10px; color: #666; margin: 5px 0;">
-        Based on the Social Enterprise Business Model Canvas by HotCubator,
-        adapted from the original Business Model Canvas by Alexander Osterwalder.
-      </p>
-      <p style="font-size: 9px; color: #999; margin: 5px 0;">hotcubator.com.au/social-entrepreneurship/social-enterprise-business-model-canvas</p>
-      <p style="font-size: 10px; color: #666; margin: 5px 0;">Exported: ${currentDate}</p>
-    </div>
-  `;
-
-  await addHtmlElement(footerHtml);
+  footerTexts.forEach((text) => {
+    checkPageBreak(4);
+    pdf.text(text, margin + contentWidth / 2, currentY, { align: 'center' });
+    currentY += 4;
+  });
 
   // Generate filename with date and time
   const filename = `SEBMC-${new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5)}.pdf`;

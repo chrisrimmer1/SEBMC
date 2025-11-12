@@ -10,6 +10,7 @@ import { useCanvasDataDB as useCanvasData } from './hooks/useCanvasDataDB'; // C
 import type { ContentItem, SectionId } from './types';
 import { parseMarkdown } from './utils/markdown';
 import { exportToPDF } from './utils/exportPDF';
+import { exportToMarkdown } from './utils/exportMarkdown';
 import './App.css';
 
 function App() {
@@ -81,6 +82,15 @@ function App() {
     }
   };
 
+  const handleExportMarkdown = () => {
+    try {
+      exportToMarkdown(canvasData);
+    } catch (error) {
+      console.error('Error exporting Markdown:', error);
+      alert('Failed to export Markdown. Please try again.');
+    }
+  };
+
   const sections = canvasData.sections;
 
   return (
@@ -93,6 +103,7 @@ function App() {
         theme={theme}
         onSetTheme={setTheme}
         onExportPDF={handleExportPDF}
+        onExportMarkdown={handleExportMarkdown}
         headerTitle={canvasData.headerTitle}
         editingHeaderTitle={editingHeaderTitle}
         tempHeaderTitle={tempHeaderTitle}

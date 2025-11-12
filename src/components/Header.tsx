@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Lock, Unlock, Eye, Edit3, FileDown } from 'lucide-react';
+import { Lock, Unlock, Eye, Edit3, FileDown, FileText } from 'lucide-react';
 import { themes, getThemeConfig, type ThemeName } from '../utils/themes';
 import skillsprintLogo from '../assets/SkillSprint.png';
 
@@ -11,6 +11,7 @@ interface HeaderProps {
   theme: ThemeName;
   onSetTheme: (theme: ThemeName) => void;
   onExportPDF: () => void;
+  onExportMarkdown: () => void;
   headerTitle?: string;
   editingHeaderTitle: boolean;
   tempHeaderTitle: string;
@@ -20,9 +21,10 @@ interface HeaderProps {
   onHeaderTitleCancel: () => void;
 }
 
-export function Header({ isAuthenticated, onLogin, onLogout, theme, onSetTheme, onExportPDF, headerTitle, editingHeaderTitle, tempHeaderTitle, onHeaderTitleClick, onHeaderTitleChange, onHeaderTitleSave, onHeaderTitleCancel }: HeaderProps) {
+export function Header({ isAuthenticated, onLogin, onLogout, theme, onSetTheme, onExportPDF, onExportMarkdown, headerTitle, editingHeaderTitle, tempHeaderTitle, onHeaderTitleClick, onHeaderTitleChange, onHeaderTitleSave, onHeaderTitleCancel }: HeaderProps) {
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [showThemeMenu, setShowThemeMenu] = useState(false);
+  const [showExportMenu, setShowExportMenu] = useState(false);
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
 
@@ -63,13 +65,41 @@ export function Header({ isAuthenticated, onLogin, onLogout, theme, onSetTheme, 
               />
             </div>
             
-            <button
-              className="btn btn-icon pdf-export"
-              onClick={onExportPDF}
-              title="Export canvas to PDF"
-            >
-              <FileDown size={16} />
-            </button>
+            <div className="theme-selector">
+              <button
+                className="btn btn-icon export-toggle"
+                onClick={() => setShowExportMenu(!showExportMenu)}
+                title="Export canvas"
+              >
+                <FileDown size={16} />
+                <span className="export-label">Export</span>
+              </button>
+
+              {showExportMenu && (
+                <div className="theme-dropdown">
+                  <button
+                    className="theme-option"
+                    onClick={() => {
+                      onExportPDF();
+                      setShowExportMenu(false);
+                    }}
+                  >
+                    <span className="theme-icon"><FileDown size={14} /></span>
+                    <span className="theme-label">PDF</span>
+                  </button>
+                  <button
+                    className="theme-option"
+                    onClick={() => {
+                      onExportMarkdown();
+                      setShowExportMenu(false);
+                    }}
+                  >
+                    <span className="theme-icon"><FileText size={14} /></span>
+                    <span className="theme-label">Markdown</span>
+                  </button>
+                </div>
+              )}
+            </div>
 
             <div className="theme-selector">
               <button
