@@ -248,7 +248,7 @@ body {
 .header-left {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 1.5rem;
   justify-self: start;
 }
 
@@ -387,6 +387,18 @@ body {
 /* Theme Selector Dropdown */
 .theme-selector {
   position: relative;
+}
+
+.export-toggle,
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.export-label,
+.theme-name {
+  white-space: nowrap;
 }
 
 /* Hide mobile theme selector on desktop */
