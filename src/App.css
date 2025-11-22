@@ -329,14 +329,18 @@ body {
 }
 
 .edit-mode-badge,
-.view-mode-badge {
-  display: flex;
+.view-mode-badge.btn {
+  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem 1rem;
+  padding: 0.75rem 1.5rem;
   border-radius: 6px;
-  font-size: 0.875rem;
   font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
 }
 
 .edit-mode-badge {
@@ -345,8 +349,9 @@ body {
 }
 
 .view-mode-badge {
-  background: #d1ecf1;
-  color: #0c5460;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
 }
 
 .btn-icon {
@@ -1152,6 +1157,9 @@ kbd {
 .btn-small {
   padding: 0.5rem 1rem;
   font-size: 0.875rem;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
 }
 
 .btn-primary {
