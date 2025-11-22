@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Lock, Unlock, Eye, Edit3, FileDown, FileText } from 'lucide-react';
 import { themes, getThemeConfig, type ThemeName } from '../utils/themes';
-import skillsprintLogo from '../assets/SkillSprint.png';
 
 interface HeaderProps {
   isAuthenticated: boolean;
@@ -57,14 +56,6 @@ export function Header({ isAuthenticated, onLogin, onLogout, theme, onSetTheme, 
       <header className="app-header">
         <div className="header-content">
           <div className="header-left">
-            <div className="logo-container">
-              <img 
-                src={skillsprintLogo} 
-                alt="SkillSprint" 
-                className="skillsprint-logo"
-              />
-            </div>
-            
             <div className="theme-selector">
               <button
                 className="btn btn-icon export-toggle"
